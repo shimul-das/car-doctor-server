@@ -50,7 +50,7 @@ const verifyjwt=(req,res,next)=>{
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    client.connect();
     const serviceCollection=client.db('carDoctor').collection('services')
     const orderCollection=client.db('orderSDB').collection('orders')
     app.get('/services',async(req,res)=>{
@@ -59,7 +59,15 @@ async function run() {
         res.send(result);
     
     })
-    //booking or orders
+    //bOOKING
+        //booking or orders
+        app.post('/booking',async(req,res)=>{
+          const booking=req.body;
+          const result = await orderCollection.insertOne(booking);
+          res.send(result);
+    
+      })
+    //JWT TOKEN SERVICE
     app.post('/jwt',async(req,res)=>{
       const user=req.headers;
       console.log(user);
