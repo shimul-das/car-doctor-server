@@ -1,5 +1,6 @@
 const express=require('express')
 const cors=require('cors')
+const jwt=require('jsonwebtoken')
 require('dotenv').config()
 const app=express();
 const port=process.env.PORT || 5000;
@@ -41,12 +42,17 @@ async function run() {
     
     })
     //booking or orders
-    app.post('/booking',async(req,res)=>{
-      const booking=req.body;
-      const result = await orderCollection.insertOne(booking);
-      res.send(result);
+    app.post('/jwt',async(req,res)=>{
+      const user=req.body;
+      console.log(user);
+      const token=jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{
+        expiresIn:'1h'
+      })
+      res.send({token});
   
   })
+
+
   //find some specific data using query
   app.get('/booked',async(req,res)=>{
     // console.log(req.query)
